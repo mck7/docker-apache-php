@@ -3,10 +3,10 @@ stages:
     - deploy
 
 build:tags:
+    stage: build
     script:
         - docker build --rm -t corycollier/apache-php:$CI_COMMIT_TAG
         - docker login --username="$DOCKER_USER" --password="$DOCKER_PASS"
         - docker push corycollier/apache-php:$CI_COMMIT_TAG
     only:
         - tags
-    
