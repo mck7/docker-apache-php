@@ -1,4 +1,4 @@
-FROM php7.0-apache
+FROM php7-apache
 MAINTAINER Cory Collier <corycollier@corycollier.com>
 
 # Do all of the global system package installations
