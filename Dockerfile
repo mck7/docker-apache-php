@@ -1,21 +1,24 @@
-FROM php:7-apache
+FROM php:7.3-apache
 MAINTAINER Cory Collier <corycollier@corycollier.com>
 
 # Do all of the global system package installations
 RUN apt -y update \
     && apt -y install \
+        libzip-dev \
         libpng-dev \
         zlib1g-dev \
         libfreetype6-dev \
 		libjpeg62-turbo-dev \
 		libmcrypt-dev \
-		libpng12-dev \
+		# libpng12-dev \
         git \
         vim
 
+RUN apt -y update
+
 # Add all of the php specific packages
 RUN docker-php-ext-install mysqli pdo pdo_mysql zip \
-    && docker-php-ext-install -j$(nproc) iconv mcrypt \
+    && docker-php-ext-install -j$(nproc) iconv \
 	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
 	&& docker-php-ext-install -j$(nproc) gd
 
