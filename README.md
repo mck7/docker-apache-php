@@ -11,7 +11,6 @@ Adding the following:
 * git
 * vim
 * cron
-* webgrind
 
 ```
 [PHP Modules]
