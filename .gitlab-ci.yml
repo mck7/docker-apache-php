@@ -18,4 +18,14 @@ test:
     stage: test
     script:
       - docker run -itd --name $CI_BUILD_REF_NAME corycollier/apache-php:$CI_BUILD_REF_NAME
-      - if [[ $(docker exec $CI_BUILD_REF_NAME bash -c "php -v | sed -n '/PHP [0-9].[0-9]/p'" | awk '{ print $2 }') = "7.3"* ]]; then echo "good"; else exit 1; fi
+      - _PHP_VERSION=$(docker exec $CI_BUILD_REF_NAME bash -c "php -v | sed -n '/PHP [0-9].[0-9]/p'")
+      - echo "${_PHP_VERSION}"
+      - if [[ "${_PHP_VERSION}" | awk '{ print $2 }') = "7.3"* ]]; then echo "good"; else exit 1; fi
+
+# - >
+#             docker run -itd -P
+#             --volume $MOUNTED_PATH/$CI_COMMIT_REF_SLUG:$DOCKER_PATH
+#             --env VIRTUAL_HOST="$CI_COMMIT_REF_SLUG-$FQDN"
+#             --add-host database.local:172.31.39.8
+#             --name $CI_COMMIT_REF_SLUG-$FQDN
+#             corycollier/apache-php:7.1-zf1.12-dev
