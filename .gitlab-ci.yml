@@ -17,8 +17,9 @@ build:
 test:
     stage: test
     script:
+      - apk add --update wget bash
       - docker run -itd --name $CI_BUILD_REF_NAME corycollier/apache-php:$CI_BUILD_REF_NAME
-      - bash tests/php-version.sh
+      - ./tests/php-version.sh
 
 # - >
 #             docker run -itd -P
