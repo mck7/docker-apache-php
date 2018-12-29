@@ -5,6 +5,7 @@ services:
 
 stages:
   - build
+  - test
 
 build:
   stage: build
@@ -12,3 +13,8 @@ build:
     - docker login --username="$DOCKER_USER" --password="$DOCKER_PASS"
     - docker build --rm -t corycollier/apache-php:$CI_BUILD_REF_NAME .
     - docker push corycollier/apache-php:$CI_BUILD_REF_NAME
+
+test:
+    stage: test
+    script:
+      - docker run -itd --name $CI_BUILD_REF_NAME corycollier/apache-php:$CI_BUILD_REF_NAME
