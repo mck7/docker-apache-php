@@ -11,6 +11,7 @@ RUN apt -y update \
 		libjpeg62-turbo-dev \
 		libmcrypt-dev \
 		# libpng12-dev \
+        cron \
         git \
         vim
 
@@ -35,7 +36,7 @@ RUN a2enmod rewrite
 RUN a2enmod headers
 
 # Server configuration overrides
-ADD config/httpd.conf /etc/apache2/es-available/000-default.conf
+ADD config/httpd.conf /etc/apache2/sites-available/000-default.conf
 ADD ./config/php.ini /usr/local/etc/php/conf.d/custom.ini
 ADD scripts/sendmail.sh /home/sendmail.sh
 ADD scripts/setup.sh /home/setup.sh
@@ -44,6 +45,8 @@ ADD scripts/setup.sh /home/setup.sh
 ADD config/.vimrc /root/.vimrc
 ADD config/.bashrc /root/.bashrc
 
-# Enable rewrite and headers
+# Set up docroot
 RUN mkdir -p /var/www/html/web
+ADD resources/index.html /var/www/html/web/index.html
+RUN /home/setup.sh
 WORKDIR /var/www/html
