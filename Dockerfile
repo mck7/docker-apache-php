@@ -13,7 +13,11 @@ RUN apt -y update \
 		# libpng12-dev \
         cron \
         git \
-        vim
+        vim \
+        sendmail-bin \
+        sendmail \
+        sendmail-cf \
+        m4
 
 RUN apt -y update
 
