@@ -1,32 +1,54 @@
-FROM php:7.3-apache
-MAINTAINER Cory Collier <corycollier@corycollier.com>
+FROM php:7.4-apache
+MAINTAINER Cory Collier <cory@mck7.io>
 
-# Do all of the global system package installations
+
+
 RUN apt -y update \
+    && apt -y upgrade \
     && apt -y install \
-        libzip-dev \
         libpng-dev \
+        libgmp-dev \
         zlib1g-dev \
         libfreetype6-dev \
-		libjpeg62-turbo-dev \
-		libmcrypt-dev \
-		# libpng12-dev \
-        cron \
-        git \
+        libjpeg62-turbo-dev \
+        libmcrypt-dev \
+        libxslt-dev \
+        libjpeg-dev \
+        libcurl4 \
+        libzip-dev \
+        less \
         vim \
+        curl \
+        rsync \
+        git \
+        ca-certificates \
+        sqlite3 \
+        libsqlite3-dev \
+        less \
+        zsh \
         sendmail-bin \
         sendmail \
         sendmail-cf \
         m4
 
-RUN apt -y update
-
 # Add all of the php specific packages
-RUN docker-php-ext-install mysqli pdo pdo_mysql zip \
-    && docker-php-ext-install -j$(nproc) iconv \
-	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install xsl \
-	&& docker-php-ext-install -j$(nproc) gd
+RUN docker-php-source extract \
+    && docker-php-ext-configure gd \
+        --with-freetype=/usr/include/ \
+        --with-jpeg=/usr/include/ \
+        --enable-gd-jis-conv \
+    && docker-php-ext-install \
+        gmp \
+        bcmath \
+        exif \
+        gd \
+        mysqli \
+        pcntl \
+        pdo \
+        pdo_mysql \
+        pdo_sqlite \
+        xsl \
+        zip
 
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
@@ -43,15 +65,16 @@ RUN a2enmod headers
 # Server configuration overrides
 ADD config/httpd.conf /etc/apache2/sites-available/000-default.conf
 ADD ./config/php.ini /usr/local/etc/php/conf.d/custom.ini
-ADD scripts/sendmail.sh /home/sendmail.sh
-ADD scripts/setup.sh /home/setup.sh
 
-# Local administration environment overrides
-ADD config/.vimrc /root/.vimrc
-ADD config/.bashrc /root/.bashrc
+# Configure composer
+RUN export COMPOSER_ALLOW_SUPERUSER=1 \
+  && composer global init \
+  && composer global require hirak/prestissimo
 
-# Set up docroot
-RUN mkdir -p /var/www/html/web
-ADD resources/index.html /var/www/html/web/index.html
-RUN /home/setup.sh
-WORKDIR /var/www/html
+RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+RUN curl -sfL git.io/antibody | sh -s - -b /usr/local/bin
+ADD dotfiles/* /root/
+ADD config/php.ini /usr/local/etc/php/conf.d/custom.ini
+
+ENV TERM xterm-256color
+ENV POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD true
