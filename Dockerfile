@@ -48,14 +48,6 @@ RUN docker-php-source extract \
         xsl \
         zip
 
-# Install composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php composer-setup.php \
-    && php -r "unlink('composer-setup.php');" \
-    && mv composer.phar /usr/local/bin/composer
-
-RUN composer global init
-
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 RUN a2enmod headers
@@ -64,17 +56,23 @@ RUN a2enmod headers
 ADD config/httpd.conf /etc/apache2/sites-available/000-default.conf
 ADD ./config/php.ini /usr/local/etc/php/conf.d/custom.ini
 
-# Configure composer
-RUN export COMPOSER_ALLOW_SUPERUSER=1 \
-  && composer global init \
-  && composer global require hirak/prestissimo
-
+# Shell stuff
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 RUN curl -sfL git.io/antibody | sh -s - -b /usr/local/bin
 ADD dotfiles/* /root/
-ADD config/php.ini /usr/local/etc/php/conf.d/custom.ini
-
-RUN pecl install xdebug
 
 ENV TERM xterm-256color
 ENV POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD true
+
+# Install composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php \
+    && php -r "unlink('composer-setup.php');" \
+    && mv composer.phar /usr/local/bin/composer
+
+# Configure composer
+RUN export COMPOSER_ALLOW_SUPERUSER=1 \
+  && composer global init
+  #&& composer global require hirak/prestissimo
+
+RUN pecl install xdebug
