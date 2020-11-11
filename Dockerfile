@@ -23,11 +23,7 @@ RUN apt -y update \
         sqlite3 \
         libsqlite3-dev \
         less \
-        zsh \
-        sendmail-bin \
-        sendmail \
-        sendmail-cf \
-        m4
+        zsh
 
 # Add all of the php specific packages
 RUN docker-php-source extract \
@@ -49,8 +45,7 @@ RUN docker-php-source extract \
         zip
 
 # Enable Apache mod_rewrite
-RUN a2enmod rewrite
-RUN a2enmod headers
+RUN a2enmod rewrite headers
 
 # Server configuration overrides
 ADD config/httpd.conf /etc/apache2/sites-available/000-default.conf
