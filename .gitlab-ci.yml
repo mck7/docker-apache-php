@@ -6,9 +6,6 @@ services:
 stages:
   - build
 
-variables:
-  _PHP_VERSION: "7.4"
-
 build:
   stage: build
   script:
