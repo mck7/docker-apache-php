@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:8.0-rc-apache
 MAINTAINER Cory Collier <cory@mck7.io>
 
 RUN apt -y update \
@@ -22,8 +22,8 @@ RUN apt -y update \
         ca-certificates \
         sqlite3 \
         libsqlite3-dev \
-        less \
-        zsh
+        # zsh \
+        less
 
 # Add all of the php specific packages
 RUN docker-php-source extract \
@@ -52,12 +52,12 @@ ADD config/httpd.conf /etc/apache2/sites-available/000-default.conf
 ADD ./config/php.ini /usr/local/etc/php/conf.d/custom.ini
 
 # Shell stuff
-RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-RUN curl -sfL git.io/antibody | sh -s - -b /usr/local/bin
+# RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# RUN curl -sfL git.io/antibody | sh -s - -b /usr/local/bin
 ADD dotfiles/* /root/
 
-ENV TERM xterm-256color
-ENV POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD true
+# ENV TERM xterm-256color
+# ENV POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD true
 
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
@@ -65,4 +65,4 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php -r "unlink('composer-setup.php');" \
     && mv composer.phar /usr/local/bin/composer
 
-RUN pecl install xdebug
+# RUN pecl install xdebug

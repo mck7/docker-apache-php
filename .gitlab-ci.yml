@@ -6,12 +6,9 @@ services:
 stages:
   - build
 
-variables:
-  _PHP_VERSION: "7.4"
-
 build:
   stage: build
   script:
     - docker login --username="$DOCKER_USER" --password="$DOCKER_PASS"
-    - docker build --rm -t corycollier/apache-php:$CI_BUILD_REF_NAME .
-    - docker push corycollier/apache-php:$CI_BUILD_REF_NAME
+    - docker build --rm -t mck7/apache-php:$CI_BUILD_REF_NAME .
+    - docker push mck7/apache-php:$CI_BUILD_REF_NAME
