@@ -5,26 +5,34 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/snap/bin:$PATH
+ZSH_THEME="powerlevel10k"
+LS_COLORS=$LS_COLORS:'di=0;33:';
+export LS_COLORS
+export ZSH=/root/.oh-my-zsh
+export TZ=America/New_York
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+export EDITOR=vim
 
-# Path to your oh-my-zsh installation.
-export ZSH="/root/.oh-my-zsh"
+setopt clobber
+setopt ignoreeof
+setopt interactivecomments
+setopt APPEND_HISTORY           # no erase history
+setopt CORRECT
+setopt EXTENDED_HISTORY         # Add timestamp
+setopt INC_APPEND_HISTORY_TIME  # Append immediately
+setopt RM_STAR_WAIT
+setopt SHARE_HISTORY            # Share between session
+
 plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
-
-alias ll="ls -laihG"
-
 source <(antibody init)
-
+antibody bundle zdharma/fast-syntax-highlighting
+antibody bundle zsh-users/zsh-autosuggestions
+antibody bundle zsh-users/zsh-completions
 antibody bundle romkatv/powerlevel10k
 
-ZSH_THEME="powerlevel10k"
-
-LS_COLORS=$LS_COLORS:'di=0;33:' ; export LS_COLORS
-
-export EDITOR=vim
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
     source /etc/profile.d/vte.sh
@@ -32,3 +40,6 @@ fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+alias ll="ls -laihG"
+alias diff='diff -W $(tput cols)'
