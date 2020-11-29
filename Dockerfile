@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:8.0.0RC5-apache
 MAINTAINER Cory Collier <cory@mck7.io>
 
 RUN apt -y update \

@@ -1,28 +1,20 @@
-# docker-apache-php
+# Docker Apache/PHP
 Generic Apache/PHP Web Host
-
-![build status](https://gitlab.com/corycollier/docker-apache-php/badges/7.3.x/build.svg)
-
-Based of the official image from php - [7.3-apache](https://github.com/docker-library/php/blob/a280ab8e8790052338ce59a1fee739df8f831f16/7.3/stretch/apache/Dockerfile)
-
-Adding the following:
-* composer
-* sendmail
-* git
-* vim
-* cron
 
 ```
 [PHP Modules]
+bcmath
 Core
 ctype
 curl
 date
 dom
+exif
 fileinfo
 filter
 ftp
 gd
+gmp
 hash
 iconv
 json
@@ -31,6 +23,7 @@ mbstring
 mysqli
 mysqlnd
 openssl
+pcntl
 pcre
 PDO
 pdo_mysql
@@ -56,4 +49,5 @@ zlib
 
 [Zend Modules]
 Xdebug
+
 ```
