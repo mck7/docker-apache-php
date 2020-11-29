@@ -1,6 +1,16 @@
 # Docker Apache/PHP
 Generic Apache/PHP Web Host
 
+## Version Information
+
+```
+PHP 8.0.0RC5 (cli) (built: Nov 25 2020 01:02:15) ( NTS )
+Copyright (c) The PHP Group
+Zend Engine v4.0.0-dev, Copyright (c) Zend Technologies
+```
+
+## Module Information
+
 ```
 [PHP Modules]
 bcmath
