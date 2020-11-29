@@ -8,5 +8,5 @@ build:
   stage: build
   script:
     - docker login --username="${DOCKER_USER}" --password="${DOCKER_PASS}"
-    - docker build --rm -t "mck7/${CI_PROJECT_NAME/docker-/}:${CI_BUILD_REF_NAME}" .
-    - docker push "mck7/${CI_PROJECT_NAME/docker-/}:${CI_BUILD_REF_NAME}"
+    - docker build --rm -t "${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME/docker-/}:${CI_BUILD_REF_NAME}" .
+    - docker push "${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME/docker-/}:${CI_BUILD_REF_NAME}"

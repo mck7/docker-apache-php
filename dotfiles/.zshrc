@@ -24,19 +24,14 @@ setopt INC_APPEND_HISTORY_TIME  # Append immediately
 setopt RM_STAR_WAIT
 setopt SHARE_HISTORY            # Share between session
 
+source $ZSH/oh-my-zsh.sh
 plugins=(git)
 
-source $ZSH/oh-my-zsh.sh
 source <(antibody init)
 antibody bundle zdharma/fast-syntax-highlighting
 antibody bundle zsh-users/zsh-autosuggestions
 antibody bundle zsh-users/zsh-completions
 antibody bundle romkatv/powerlevel10k
-
-
-if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
-    source /etc/profile.d/vte.sh
-fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
