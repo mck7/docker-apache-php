@@ -1,2 +1,2 @@
-# docker-apache-php
+# Docker Apache/PHP
 Generic Apache/PHP Web Host
